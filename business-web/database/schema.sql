@@ -1,8 +1,5 @@
--- Business Web Database Schema (SQLite)
-
 PRAGMA foreign_keys = ON;
 
--- Users (Owner + Customers)
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
@@ -14,14 +11,13 @@ CREATE TABLE IF NOT EXISTS users (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Products
 CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     name_en TEXT,
     description TEXT,
-    cost_price REAL NOT NULL,          -- Bei ya kununua
-    selling_price REAL NOT NULL,       -- Bei ya kuuza
+    cost_price REAL NOT NULL,
+    selling_price REAL NOT NULL,
     stock INTEGER NOT NULL DEFAULT 0,
     category TEXT,
     image_url TEXT,
@@ -30,14 +26,13 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Sales (Mauzo)
 CREATE TABLE IF NOT EXISTS sales (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sale_number TEXT UNIQUE,
-    user_id INTEGER,                   -- Who recorded the sale
-    customer_id INTEGER,               -- Optional customer
+    user_id INTEGER,
+    customer_id INTEGER,
     total_amount REAL NOT NULL,
-    total_cost REAL NOT NULL,          -- For profit calculation
+    total_cost REAL NOT NULL,
     profit REAL NOT NULL,
     payment_method TEXT DEFAULT 'cash' CHECK(payment_method IN ('cash', 'mobile', 'card', 'debt')),
     status TEXT DEFAULT 'completed' CHECK(status IN ('completed', 'pending', 'cancelled')),
@@ -47,7 +42,6 @@ CREATE TABLE IF NOT EXISTS sales (
     FOREIGN KEY (customer_id) REFERENCES users(id)
 );
 
--- Sale Items (bidhaa katika mauzo)
 CREATE TABLE IF NOT EXISTS sale_items (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     sale_id INTEGER NOT NULL,
@@ -61,11 +55,10 @@ CREATE TABLE IF NOT EXISTS sale_items (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Debts (Madeni)
 CREATE TABLE IF NOT EXISTS debts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     customer_id INTEGER NOT NULL,
-    sale_id INTEGER,                   -- Linked sale if any
+    sale_id INTEGER,
     original_amount REAL NOT NULL,
     remaining_amount REAL NOT NULL,
     description TEXT,
@@ -77,20 +70,18 @@ CREATE TABLE IF NOT EXISTS debts (
     FOREIGN KEY (sale_id) REFERENCES sales(id)
 );
 
--- Debt Payments (Malipo ya madeni)
 CREATE TABLE IF NOT EXISTS debt_payments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     debt_id INTEGER NOT NULL,
     amount REAL NOT NULL,
     payment_method TEXT DEFAULT 'cash',
     notes TEXT,
-    paid_by INTEGER,                   -- User who recorded payment
+    paid_by INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (debt_id) REFERENCES debts(id),
     FOREIGN KEY (paid_by) REFERENCES users(id)
 );
 
--- Payments (General payments / transactions)
 CREATE TABLE IF NOT EXISTS payments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     reference TEXT UNIQUE,
@@ -104,7 +95,6 @@ CREATE TABLE IF NOT EXISTS payments (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_sales_created_at ON sales(created_at);
 CREATE INDEX IF NOT EXISTS idx_sale_items_product ON sale_items(product_id);
 CREATE INDEX IF NOT EXISTS idx_debts_customer ON debts(customer_id);
