@@ -4,9 +4,9 @@
 
 ## Project Overview
 
-This project uses Machine Learning to predict groundwater and water quality parameters from available water quality data.
+i) This project uses Machine Learning to predict groundwater and water quality parameters from available water quality data.
 
-The project focuses on predicting important parameters such as pH, nitrate, total hardness, TDS, and conductivity.
+ii) The project focuses on predicting important parameters such as pH, nitrate, total hardness, TDS, and conductivity.
 
 The Machine Learning model is developed and tested using Google Colab.
 
@@ -57,10 +57,4 @@ Future development will include:
 - Drilling difficulty estimation
 - Water quality classification
 - Water suitability recommendations
-- Web-based prediction interface
-
-## Author
-
-Leonard Shindikwa
-
-Mbeya University of Science and Technology (MUST)
+- Web-based prediction interface.
