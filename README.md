@@ -8,7 +8,7 @@ i) This project uses Machine Learning to predict groundwater and water quality p
 
 ii) The project focuses on predicting important parameters such as pH, nitrate, total hardness, TDS, and conductivity.
 
-The Machine Learning model is developed and tested using Google Colab.
+iii) The Machine Learning model is developed and tested using Google Colab.
 
 ## Machine Learning Notebook
 
